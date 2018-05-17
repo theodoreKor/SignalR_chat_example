@@ -1,0 +1,15 @@
+﻿#send {
+    width: 161px;
+}
+
+*#delete {
+    width: 100px;
+    background-color: white;
+    color: red;
+    border: 2px solid red;
+}
+
+#delete:hover {
+    background-color: red;
+    color: white;
+}

@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>SignalR Chat Example</title>
+    <meta charset="utf-8" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+    <!--CSS-->
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <script src="Scripts/jquery-3.3.1.min.js"></script>
+    <script src="Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <script src="signalr/hubs"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            var chatHub = $.connection.chatHub;
+
+            // method that the server will call on the client
+            chatHub.client.receive = function (connectionId, message) {
+                $("#log").append("<strong>User " + connectionId + " wrote:</strong> " + message + "<br />");
+            }
+
+            // method to delete all messages from all the clients
+            chatHub.client.delete = function () {
+                $("#log").empty();
+            }
+
+            // on hub initialization
+            $.connection.hub.start().done(function () {
+                $("#send").on("click", function () {
+                    var message = $("#message").val();
+                    chatHub.server.broadcast(message);
+                })
+
+                $("#intro").append("Welcome to this awesome chat app!<br />");
+
+                $("#delete").on("click", function () {
+                    chatHub.server.deleteAll();
+                })
+
+            })
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md">
+                <div id="intro"></div>
+                <input id="message" type="text" style="width:500px" />
+                <button type="button" class="btn btn-primary" id="send">Send</button>
+                <button type="button" class="btn btn-danger" id="delete">Delete All</button>
+                <div id="log"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
