@@ -20,12 +20,17 @@
 
             // method that the server will call on the client
             chatHub.client.receive = function (connectionId, message) {
-                $("#log").append("<strong>User " + connectionId + " wrote:</strong> " + message + "<br />");
+                $("#log1").append("<strong>User " + connectionId + " wrote:</strong> " + message + "<br />");
             }
 
             // method to delete all messages from all the clients
             chatHub.client.delete = function () {
-                $("#log").empty();
+                $("#log1").empty();
+            }
+
+            // method to show the number of connected Ids
+            chatHub.client.update = function (number_of_clients) {
+                $("#log2").html("Number of connected users right now: " + number_of_clients);
             }
 
             // on hub initialization
@@ -48,12 +53,15 @@
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-md">
+            <div class="col-7">
                 <div id="intro"></div>
-                <input id="message" type="text" style="width:500px" />
+                <input id="message" type="text" onfocus="this.value=''" autocomplete="off" style="width:250px" />
                 <button type="button" class="btn btn-primary" id="send">Send</button>
                 <button type="button" class="btn btn-danger" id="delete">Delete All</button>
-                <div id="log"></div>
+                <div id="log1"></div>
+            </div>
+            <div class="col-5">
+                <div id="log2"></div>
             </div>
         </div>
     </div>
